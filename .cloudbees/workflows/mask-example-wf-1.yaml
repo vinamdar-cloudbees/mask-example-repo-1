@@ -36,7 +36,7 @@ jobs:
         with:
           repository: calculi-corp/template-go-testing
           ref: main
-          token: ${{ secrets.GIT_PAT }}
+          token: ${{ secrets.GIT_PT }}
 
       - name: black duck hybrid plugin scan
         uses: cloudbees-io/blackduck-sca-scan-dependency-private@main
