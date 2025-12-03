@@ -10,7 +10,7 @@ on:
 jobs:
   fetch-secrets-job:
     outputs:
-      secret-vars: ${{ steps.fetch-secrets-step.outputs.secret-vars }}
+      secret-vars: ${{ steps.fetch-secrets-step.outputs.conjur_output }}
     steps:
       - name: fetch-secrets-step
         id: fetch-secrets-step
