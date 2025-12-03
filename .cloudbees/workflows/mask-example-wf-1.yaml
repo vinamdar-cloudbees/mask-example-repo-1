@@ -1,12 +1,11 @@
 name: mask-example-wf-1
 kind: workflow
 apiVersion: automation.cloudbees.io/v1alpha1
-
 on:
   push:
     branches:
       - main
- 
+  workflow_dispatch:
 jobs:
   fetch-secrets-job:
     outputs:
@@ -18,31 +17,14 @@ jobs:
         with:
           url: ${{ vars.CONJURE_URL }}
           api-key: ${{ secrets.CONJURE_API_KEY }}
-          login: 'host%2Fdata%2Fca04-dev-db'
+          login: host%2Fdata%2Fca04-dev-db
           variables: data/DEV-DC1-ENG-DB/oracle-admin-creds/password,data/DEV-DC1-ENG-DB/oracle-admin-creds/username
-
       - name: use-secrets-step
         uses: docker://golang:1.20-alpine
         shell: sh
-        run: | # These echo commands will mask the secrets since they are already masked in the action of the same job
+        run: |
           echo "Using secrets in another step"
           echo ${{ fromJSON(steps.fetch-secrets-step.outputs.conjur_output).data_DEV-DC1-ENG-DB_oracle-admin-creds_password }}
           echo ${{ fromJSON(steps.fetch-secrets-step.outputs.conjur_output).data_DEV-DC1-ENG-DB_oracle-admin-creds_username }}
           echo ${{ fromJSON(steps.fetch-secrets-step.outputs.conjur_output).data_DEV-DC1-ENG-DB_oracle-admin-creds_password }}
           echo ${{ fromJSON(steps.fetch-secrets-step.outputs.conjur_output).data_DEV-DC1-ENG-DB_oracle-admin-creds_username }}
-
-      # - name: checkout Source Code
-      #   uses: cloudbees-io/checkout@v1
-      #   with:
-      #     repository: calculi-corp/template-go-testing
-      #     ref: main
-      #     token: ${{ secrets.GIT_PT }}
-
-      # - name: black duck hybrid plugin scan
-      #   uses: cloudbees-io/blackduck-sca-scan-dependency-private@main
-      #   with:
-      #     server-url: 'https://blackduck.saas-qa.beescloud.com'
-      #     api-token: ${{ fromJSON(steps.fetch-secrets-step.outputs.conjur_output).data_DEV-DC1-ENG-DB_oracle-admin-creds_password }}
-      #     project-name: 'template-security-plugin'
-      #     project-version: '0.0.1'
-      #     ref: main
