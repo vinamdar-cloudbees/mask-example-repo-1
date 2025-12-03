@@ -30,3 +30,19 @@ jobs:
           echo ${{ fromJSON(steps.fetch-secrets-step.outputs.conjur_output).data_DEV-DC1-ENG-DB_oracle-admin-creds_username }}
           echo ${{ fromJSON(steps.fetch-secrets-step.outputs.conjur_output).data_DEV-DC1-ENG-DB_oracle-admin-creds_password }}
           echo ${{ fromJSON(steps.fetch-secrets-step.outputs.conjur_output).data_DEV-DC1-ENG-DB_oracle-admin-creds_username }}
+
+      - name: checkout Source Code
+        uses: cloudbees-io/checkout@v1
+        with:
+          repository: calculi-corp/template-go-testing
+          ref: main
+          token: ${{ secrets.GIT_PAT }}
+
+      - name: black duck hybrid plugin scan
+        uses: cloudbees-io/blackduck-sca-scan-dependency-private@main
+        with:
+          server-url: 'https://blackduck.saas-qa.beescloud.com'
+          api-token: ${{ fromJSON(steps.fetch-secrets-step.outputs.conjur_output).data_DEV-DC1-ENG-DB_oracle-admin-creds_password }}
+          project-name: 'template-security-plugin'
+          project-version: '0.0.1'
+          ref: main
