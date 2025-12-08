@@ -7,10 +7,13 @@ on:
       requiredInput:
         type: number
         required: true
+      targetenv:
+        type: string
   
 jobs:
   call_rw_1:
     uses: vinamdar-cloudbees/mask-example-repo-1/.cloudbees/workflows/reusable-wf.yaml
     with:
       requiredInput: ${{ inputs.requiredInput }}
+      targetenv: ${{ inputs.targetenv }}
     
