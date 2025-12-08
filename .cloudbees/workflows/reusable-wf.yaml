@@ -5,6 +5,8 @@ name: reusable wf 1
 on:
   workflow_call:
     inputs:
+      targetenv:
+        type: string
       choiceInput:
         type: choice
         options:
@@ -26,7 +28,7 @@ on:
           
 jobs:
   JobName1:
-    environment: prod
+    environment: ${{ inputs.targetenv }}
     steps:
       - name: print input
         uses: docker://golang:1.20.3-alpine3.17
