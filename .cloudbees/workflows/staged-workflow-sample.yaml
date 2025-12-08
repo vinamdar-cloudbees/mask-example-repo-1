@@ -1,47 +1,45 @@
 apiVersion: automation.cloudbees.io/v1alpha1
 kind: workflow
 name: staged-workflow-sample
-
 on:
   push:
     branches:
-    - '**'
-  workflow_dispatch:
-
+      - "**"
+  workflow_dispatch: null
 metadata:
   stages/v1alpha1:
     - name: Stage 1
-      jobs: [job-A, job-B]
+      jobs:
+        - job-A
+        - job-B
     - name: Stage 2
-      jobs: [job-C, job-D]
-
-
+      jobs:
+        - job-C
+        - job-D
 jobs:
   job-A:
     steps:
-    - uses: docker://alpine:3.20
-      run: |
-        echo "hello job-A"
+      - uses: docker://alpine:3.20
+        run: |
+          echo "hello job-A"
   job-B:
     needs: job-A
     steps:
-    - uses: docker://alpine:3.20
-      run: |
-        echo "hello job-B"
-        
+      - uses: docker://alpine:3.20
+        run: |
+          echo "hello job-B"
   job-D:
     needs:
       - job-C
     steps:
-    - uses: docker://alpine:3.20
-      run: |
-        echo "hello job-D"
-
-
+      - uses: docker://alpine:3.20
+        run: |
+          echo "hello job-D"
   job-C:
     needs:
       - job-B
+    environment: prod
     steps:
-    - uses: docker://alpine:3.20
-      run: |
-        echo "hello job-C"
+      - run: |
+          echo "hello job-C"
+        uses: docker://alpine:3.20
