@@ -26,6 +26,7 @@ on:
           
 jobs:
   JobName1:
+    environment: prod
     steps:
       - name: print input
         uses: docker://golang:1.20.3-alpine3.17
