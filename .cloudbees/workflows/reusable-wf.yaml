@@ -40,7 +40,7 @@ jobs:
           echo "inputs.boolInput = ${{inputs.boolInput}}"
           echo "inputs.withDefault = ${{inputs.withDefault}}"
           echo "inputs.requiredInput = ${{inputs.requiredInput}}"
-          # echo "property key "
+          # echo "property key = ${{vars.key}}"
           
 
 
